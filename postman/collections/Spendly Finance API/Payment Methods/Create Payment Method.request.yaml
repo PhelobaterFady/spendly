@@ -1,0 +1,30 @@
+$kind: http-request
+name: Create Payment Method
+method: POST
+url: '{{baseUrl}}/api/payment-methods'
+order: 2000
+headers:
+  - key: x-user-id
+    value: '{{x-user-id}}'
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Cash",
+      "balance": 1000
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 201", function () {
+          pm.response.to.have.status(201);
+      });
+
+      pm.test("Response has id field", function () {
+          pm.expect(pm.response.json()).to.have.property("id");
+      });
+
+      pm.environment.set("paymentMethodId", pm.response.json().id.toString());

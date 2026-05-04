@@ -1,0 +1,10 @@
+name: Spendly - Production
+values:
+  - key: baseUrl
+    value: 'https://api.spendly.app'
+    enabled: true
+    type: default
+  - key: x-user-id
+    value: ''
+    enabled: true
+    type: default

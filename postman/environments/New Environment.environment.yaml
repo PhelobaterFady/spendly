@@ -1,0 +1,6 @@
+name: New Environment
+values:
+  - key: baseUrl
+    value: 'http://localhost:3000'
+  - key: x-user-id
+    value: ''

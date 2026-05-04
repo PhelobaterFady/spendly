@@ -1,0 +1,31 @@
+$kind: http-request
+name: Add Income
+method: POST
+url: '{{baseUrl}}/api/income'
+order: 2000
+headers:
+  - key: x-user-id
+    value: '{{x-user-id}}'
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "amount": 3000,
+      "source": "Salary",
+      "date": "2025-05-01",
+      "description": "Monthly salary",
+      "payment_method_id": "{{paymentMethodId}}"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 201", function () {
+          pm.response.to.have.status(201);
+      });
+
+      pm.test("Response has id field", function () {
+          pm.expect(pm.response.json()).to.have.property("id");
+      });

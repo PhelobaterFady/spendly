@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تطبيق المصروفات الشخصية - Spendly</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- قسم تسجيل الدخول والتسجيل -->
+    <div id="authPage" class="page active">
+      <div class="auth-container">
+        <div class="auth-card">
+          <h1>Spendly</h1>
+          <p class="subtitle">تطبيق إدارة المصروفات الشخصية</p>
+          
+          <form id="authForm">
+            <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+            <input type="password" id="password" placeholder="كلمة المرور" required>
+            <button type="submit" id="authBtn">تسجيل الدخول</button>
+          </form>
+          
+          <p class="toggle-auth">
+            ليس لديك حساب؟ <a href="#" onclick="toggleAuthMode(event)">إنشاء حساب جديد</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- قسم لوحة التحكم الرئيسية -->
+    <div id="dashboardPage" class="page">
+      <div class="sidebar">
+        <div class="logo">Spendly</div>
+        <nav class="nav-menu">
+          <a href="#" onclick="goToPage('dashboard')" class="nav-item active">لوحة التحكم</a>
+          <a href="#" onclick="goToPage('transactions')" class="nav-item">المعاملات</a>
+          <a href="#" onclick="goToPage('income')" class="nav-item">الدخل</a>
+          <a href="#" onclick="goToPage('wallets')" class="nav-item">المحافظ</a>
+          <a href="#" onclick="goToPage('categories')" class="nav-item">التصنيفات</a>
+          <a href="#" onclick="goToPage('budgets')" class="nav-item">الميزانية</a>
+          <a href="#" onclick="goToPage('goals')" class="nav-item">الأهداف</a>
+          <a href="#" onclick="logout()" class="nav-item logout">تسجيل الخروج</a>
+        </nav>
+      </div>
+
+      <div class="main-content">
+        <!-- Dashboard View -->
+        <div id="dashboardView" class="view active">
+          <div class="header">
+            <h2>لوحة التحكم</h2>
+            <span id="userName"></span>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card income">
+              <h3>إجمالي الدخل</h3>
+              <p id="totalIncome">0.00</p>
+              <span>ج.م</span>
+            </div>
+            <div class="stat-card expenses">
+              <h3>إجمالي المصروفات</h3>
+              <p id="totalExpenses">0.00</p>
+              <span>ج.م</span>
+            </div>
+            <div class="stat-card balance">
+              <h3>الرصيد الصافي</h3>
+              <p id="netBalance">0.00</p>
+              <span>ج.م</span>
+            </div>
+            <div class="stat-card category">
+              <h3>أكثر فئة</h3>
+              <p id="topCategory">-</p>
+            </div>
+          </div>
+
+          <div class="actions-grid">
+            <button class="action-btn" onclick="showAddExpenseForm()">
+              <span class="icon">➕</span>
+              إضافة مصروف
+            </button>
+            <button class="action-btn" onclick="showAddIncomeForm()">
+              <span class="icon">💰</span>
+              إضافة دخل
+            </button>
+            <button class="action-btn" onclick="showAddWalletForm()">
+              <span class="icon">👛</span>
+              إضافة محفظة
+            </button>
+            <button class="action-btn" onclick="goToPage('categories')">
+              <span class="icon">🏷️</span>
+              إدارة الفئات
+            </button>
+            <button class="action-btn" onclick="goToPage('budgets')">
+              <span class="icon">📊</span>
+              الميزانية
+            </button>
+            <button class="action-btn" onclick="showAddGoalForm()">
+              <span class="icon">🎯</span>
+              إضافة هدف
+            </button>
+          </div>
+        </div>
+
+        <!-- Transactions View -->
+        <div id="transactionsView" class="view">
+          <div class="header">
+            <h2>المصروفات</h2>
+            <button class="btn-primary" onclick="showAddExpenseForm()">إضافة مصروف</button>
+          </div>
+          <div class="list" id="expensesList"></div>
+        </div>
+
+        <!-- Income View -->
+        <div id="incomeView" class="view">
+          <div class="header">
+            <h2>الدخل</h2>
+            <button class="btn-primary" onclick="showAddIncomeForm()">إضافة دخل</button>
+          </div>
+          <div class="list" id="incomeList"></div>
+        </div>
+
+        <!-- Wallets View -->
+        <div id="walletsView" class="view">
+          <div class="header">
+            <h2>المحافظ</h2>
+            <button class="btn-primary" onclick="showAddWalletForm()">إضافة محفظة</button>
+          </div>
+          <div class="list" id="walletsList"></div>
+        </div>
+
+        <!-- Categories View -->
+        <div id="categoriesView" class="view">
+          <div class="header">
+            <h2>التصنيفات</h2>
+            <button class="btn-primary" onclick="showAddCategoryForm()">إضافة فئة</button>
+          </div>
+          <div class="list" id="categoriesList"></div>
+        </div>
+
+        <!-- Budgets View -->
+        <div id="budgetsView" class="view">
+          <div class="header">
+            <h2>الميزانية الشهرية</h2>
+            <button class="btn-primary" onclick="showAddBudgetForm()">إضافة ميزانية</button>
+          </div>
+          <div class="list" id="budgetsList"></div>
+        </div>
+
+        <!-- Goals View -->
+        <div id="goalsView" class="view">
+          <div class="header">
+            <h2>الأهداف</h2>
+            <button class="btn-primary" onclick="showAddGoalForm()">إضافة هدف</button>
+          </div>
+          <div class="list" id="goalsList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Forms -->
+    <div id="formModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <form id="itemForm"></form>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+name: Spendly - Development
+values:
+  - key: baseUrl
+    value: 'http://localhost:3000'
+    enabled: true
+    type: default
+  - key: x-user-id
+    value: ''
+    enabled: true
+    type: default

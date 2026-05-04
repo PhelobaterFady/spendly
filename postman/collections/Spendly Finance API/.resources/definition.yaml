@@ -1,0 +1,7 @@
+$kind: collection
+name: Spendly Finance API
+variables:
+  - key: baseUrl
+    value: '{{baseUrl}}'
+  - key: x-user-id
+    value: '{{x-user-id}}'
